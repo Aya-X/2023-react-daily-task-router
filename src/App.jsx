@@ -1,10 +1,38 @@
-import { HashRouter, NavLink } from 'react-router-dom';
+/* eslint-disable react/prop-types */
+import {
+  HashRouter,
+  NavLink,
+  Routes,
+  Route,
+  useNavigate,
+} from 'react-router-dom';
 
 import './App.css';
+import { useState } from 'react';
+
+const Logout = ({ isLogin }) => {
+  let navigate = useNavigate();
+
+  const handleLogout = () => {
+    if (!isLogin) {
+      navigate('/login');
+    }
+  };
+
+  return <button type="button" onClick={handleLogout}>登出</button>;
+};
 
 const Todo = () => {
-  return <p>這是 Todo 頁面</p>;
+  const [isLogin] = useState(false);
+
+  return (
+    <>
+      <h2>這是 Todo 頁面</h2>
+      <Logout isLogin={isLogin} />
+    </>
+  );
 };
+
 const Login = () => {
   return <p>這是登入頁面</p>;
 };
@@ -38,7 +66,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/todo" element={<Todo />} />
         </Routes>
-
         {/* 練習區 */}
       </HashRouter>
     </div>
