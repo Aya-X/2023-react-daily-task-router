@@ -5,6 +5,8 @@ import {
   Routes,
   Route,
   useNavigate,
+  Outlet,
+  useParams,
 } from 'react-router-dom';
 
 import './App.css';
@@ -19,7 +21,11 @@ const Logout = ({ isLogin }) => {
     }
   };
 
-  return <button type="button" onClick={handleLogout}>登出</button>;
+  return (
+    <button type="button" onClick={handleLogout}>
+      登出
+    </button>
+  );
 };
 
 const Todo = () => {
@@ -40,7 +46,30 @@ const Register = () => {
   return <p>這是註冊頁面</p>;
 };
 
+const Post = () => {
+  return (
+    <div>
+      <h3>Post</h3>
+      <Outlet />
+    </div>
+  );
+};
+
+const PostInfo = () => {
+  let params = useParams();
+  return (
+    <p>
+      - postID:
+      <pre>
+        <code>{params.postId}</code>
+      </pre>
+    </p>
+  );
+};
+
 function App() {
+  const randomId = self.crypto.randomUUID();
+
   return (
     <div className="container">
       <HashRouter>
@@ -57,6 +86,9 @@ function App() {
           <NavLink to="/todo">
             <p>Todo 頁面</p>
           </NavLink>
+          <NavLink to={`/post/${randomId}`}>
+            <p>Post 詳細頁面</p>
+          </NavLink>
         </div>
         {/* end of nav */}
 
@@ -65,6 +97,10 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/todo" element={<Todo />} />
+
+          <Route path="/post" element={<Post />}>
+            <Route path=":postId" element={<PostInfo />} />
+          </Route>
         </Routes>
         {/* 練習區 */}
       </HashRouter>
